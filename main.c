@@ -1,15 +1,20 @@
 // Filename: main.c
+
+
 #include <stdio.h>
 #include "include/embaixador.h"
-#include "menu.h"
+#include "include/menu.h"
 
+
+// Main function
 int main() {
+
     int choice;
-    int numeroEstudante;
 
     do {
-        displayMenu();
-        scanf("%d", &choice);
+        // displayMenu();
+        menu();
+        choice = getValidatedInt("");
 
         switch (choice) {
             case 1:
@@ -19,9 +24,7 @@ int main() {
                 listarEmbaixadores("embaixador.dat");
                 break;
             case 3:
-                printf("Insira o numero do estudante: ");
-                scanf("%d", &numeroEstudante);
-                consultarEmbaixador(numeroEstudante, "embaixador.dat");
+                consultarEmbaixador(getValidatedInt("Insira o numero do estudante: "), "embaixador.dat");
                 break;
             case 4:
                 editarEmbaixador();
@@ -29,8 +32,8 @@ int main() {
             case 5:
                 eliminarEmbaixador();
                 break;
-            case 6:
-                printf("Saindo...\n");
+            case 15:
+                printf("A sair do programa...\n");
                 break;
             default:
                 printf("Opcao invalida. Tente novamente.\n");

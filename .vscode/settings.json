@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "embaixador.h": "c"
+        "embaixador.h": "c",
+        "stdio.h": "c"
     }
 }
