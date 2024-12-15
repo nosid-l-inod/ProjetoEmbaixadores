@@ -4,6 +4,6 @@
 #define MENU_H
 
 void displayMenu();
-void menu();
+void mostrarMenu();
 
 #endif

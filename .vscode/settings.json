@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "embaixador.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "menu.h": "c"
     }
 }
