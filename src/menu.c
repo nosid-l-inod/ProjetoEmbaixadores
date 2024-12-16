@@ -1,6 +1,6 @@
 // Filename: menu.c
 #include <stdio.h>
-#include "include/menu.h"
+#include "../include/menu.h"
 
 
 // Mostrar o menu

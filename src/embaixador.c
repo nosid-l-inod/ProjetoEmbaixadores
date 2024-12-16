@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "include/embaixador.h"
+#include "../include/embaixador.h"
 
 
 // Carregar dados do ficheiro
@@ -42,7 +42,6 @@ void carregarDados(Embaixador embaixador[], const char *pFicheiro) {
 }
 
 
-
 // Salvar dados no ficheiro
 void salvarDados(Embaixador embaixador[], const char *pFicheiro) {
 
@@ -71,8 +70,7 @@ void salvarDados(Embaixador embaixador[], const char *pFicheiro) {
 }
 
 
-
-// Validar inteiros
+// Validar numeros
 int validarInteiro(const char *argumento) {
     
     int valido = 0;
@@ -84,7 +82,7 @@ int validarInteiro(const char *argumento) {
 
         if (scanf("%d", &numero) != 1) {
             printf("Dado invalido. Por favor insira um numero\n");
-            while (getchar() != "\n");
+            while (getchar() != '\n');
         }
         else {
             valido = 1;
@@ -94,31 +92,32 @@ int validarInteiro(const char *argumento) {
 }
 
 
-
-// Rever este, não funciona muito bem
 // Validar nome
-void validarNome(char *nome, const char *valor) {
-
+void validarNome(char *nome, const char *prompt) {
     int valido = 0;
 
     while (!valido) {
-        printf("%s", valor);
+        printf("%s", prompt);
 
-        fgets(nome, sizeof(nome), stdin);
-        nome[strcspn(nome, "\n")] = "\0";
+        // Read the input
+        fgets(nome, 100, stdin);
+        nome[strcspn(nome, "\n")] = '\0';  // Remove the newline character
 
         valido = 1;
-
-        for (int i = 0; nome[i] != "\0"; i++) {
+        for (int i = 0; nome[i] != '\0'; i++) {
             if (!isalpha(nome[i]) && nome[i] != ' ') {
-                printf("O nome e invalido. \nPor favor insira um numero sem numero or caracteres especiais");
+                printf("O nome e invalido. Por favor insira um nome sem numeros ou caracteres especiais.\n");
                 valido = 0;
                 break;
             }
         }
+
+        if (strlen(nome) == 0) {
+            printf("O nome e invalido. O nome nao pode ser vazio.\n");
+            valido = 0;
+        }
     }
 }
-
 
 
 // Validar NIF
@@ -152,7 +151,6 @@ void validarNif(char *nif, const char *valor) {
 }
 
 
-
 // Capitalizar os nomes
 void capitalizarNomes(char *name) {
 
@@ -173,7 +171,6 @@ void capitalizarNomes(char *name) {
 }
 
 
-
 // Ordenar embaixadores por nome
 void ordenarEmbaixadores(Embaixador embaixador[]) {
 
@@ -187,7 +184,6 @@ void ordenarEmbaixadores(Embaixador embaixador[]) {
         }
     }
 }
-
 
 
 // AdicionarEmbaixador
@@ -215,11 +211,11 @@ void adicionarEmbaixador(Embaixador embaixador[]) {
     }
 
     // Pedir numero de estudante
-    numeroEstudante = getValidInteger("Numero de estudante: ");
+    numeroEstudante = validarInteiro("Numero de estudante: ");
     embaixador[i].numeroEstudante = numeroEstudante;
 
     // Mostar as escolas disponiveis
-    printf("Selecione a escola:\n");
+    printf("\nEscolas:\n");
     for (int j = 0; j < tamanhoEscola; j++) {
         printf("%d. %s\n", j + 1, escolas[j]);
     }
@@ -228,7 +224,7 @@ void adicionarEmbaixador(Embaixador embaixador[]) {
     valid_input = 0;
 
     while (!valid_input) {
-        printf("Enter choice (1-%d): ", tamanhoEscola);
+        printf("\nSelecione a escola: (1-%d): ", tamanhoEscola);
         if (scanf("%d", &escolha) != 1 || escolha < 1 || escolha > tamanhoEscola) {
             printf("Opcao invalida. Por favor escolha um numero entre 1 and %d.\n", tamanhoEscola);
             while (getchar() != '\n');
@@ -241,17 +237,19 @@ void adicionarEmbaixador(Embaixador embaixador[]) {
     strcpy(embaixador[i].escola, escolas[escolha - 1]);
     while (getchar() != '\n');
 
-    // Pedir e validar o nome
-    printf("Insira o nome completo: ");
+    // Nome completo
+    printf("Nome completo: ");
     fgets(nomeCompleto, 100, stdin);
     nomeCompleto[strcspn(nomeCompleto, "\n")] = '\0';
+    capitalizarNomes(nomeCompleto);
+    strcpy(embaixador[i].nomeCompleto, nomeCompleto);
 
     // Capitalizar e inserir o nome na estrutura
-    capitalizeName(nomeCompleto);
+    capitalizarNomes(nomeCompleto);
     strcpy(embaixador[i].nomeCompleto, nomeCompleto);   
 
     // Pedir e validar NIF
-    getValidNIF(nif, "Insira o NIF: ");
+    validarNif(nif, "\nInsira o NIF: ");
     strcpy(embaixador[i].nif, nif);
 
     if (i + 1 < MAX_EMBAIXADORES) {
@@ -260,6 +258,47 @@ void adicionarEmbaixador(Embaixador embaixador[]) {
 }
 
 
+// Mostrar  embaixador
+void listarEmbaixador(Embaixador embaixador[]) {
+    ordenarEmbaixadores(embaixador); 
+    printf("Embaixadores\n");
+    printf("+-----------------+-------+--------------------+---------+\n");
+    printf("| %-15s | %-5s | %-18s | %-9s |\n", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
+    printf("+-----------------+-------+--------------------+---------+\n");
+    for (int i = 0; i < MAX_EMBAIXADORES && embaixador[i].numeroEstudante != -1; i++) {
+        printf("| %-15d | %-5s | %-18s | %-9s |\n", embaixador[i].numeroEstudante, embaixador[i].escola, embaixador[i].nomeCompleto, embaixador[i].nif);
+        printf("+-----------------+-------+--------------------+---------+\n");
+    }
+}
+
+
+//  Consultar detalhes do embaixador
+void consultarEmbaixador(Embaixador embaixador[]) {
+    int numero_estudante, found = 0;
+
+    // Mostrar os embaixadores disponíveis
+    listarEmbaixador(embaixador);
+
+    printf("\nInsira o numero de estudante para ver os seus detalhes: ");
+    scanf("%d", &numero_estudante);
+
+    // Mostrar os detalhes
+    for (int i = 0; i < MAX_EMBAIXADORES && embaixador[i].numeroEstudante != -1; i++) {
+        if (embaixador[i].numeroEstudante == numero_estudante) {
+            printf("Detalhes do embaixador: \n\n");
+            printf("\nNumero de estudante %d:\n", numero_estudante);
+            printf("Nome Completo: %s\n", embaixador[i].nomeCompleto);
+            printf("Escola: %s\n", embaixador[i].escola);
+            printf("NIF: %s\n", embaixador[i].nif);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("O embaixador com o numero %d nao foi encontrado\n", numero_estudante);
+    }
+}
 
 
 

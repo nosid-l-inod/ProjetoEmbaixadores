@@ -34,6 +34,6 @@ Menu
     Opção 15: Sair da aplicação
 
 
-gcc main.c embaixador.c menu.c -o main
+gcc main.c src/embaixador.c src/menu.c -o main
 
 ./main
