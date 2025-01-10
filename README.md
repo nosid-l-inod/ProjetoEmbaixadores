@@ -35,3 +35,23 @@ Esta função cria um embaixador e guarda o mesmo no ficheiro csv
 
 # Validar numero de estudante
 garante que o campo aceite o tipo de dado esperado, um numero
+
+# Estrutura do projeto
+## Esta é a estrutura do projeto
+
+ProjetoEmbaixadores/
+├── src/
+│   ├── embaixadore.c
+│   ├── menu.c
+│   ├── utils.c
+│   └── visita.c
+├── include/
+│   ├── embaixadore.h
+│   ├── menu.h
+│   ├── utils.h
+│   └── visita.h
+├── data/
+│   ├── embaixador.csv
+│   └── visita.csv
+├── main.c
+└── README.md

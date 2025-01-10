@@ -1,37 +1,25 @@
-// Embaixador.h
-
 #ifndef EMBAIXADOR_H
 #define EMBAIXADOR_H
-
-#define MAX_EMBAIXADORES 100
 
 
 // Estrutura do embaixador
 typedef struct {
-    int numeroEstudante;
+    int numero_estudante;
     char escola[5];
     char nomeCompleto[100];
-    int nif;
+    char nif[10];
 } Embaixador;
 
 
-// Protótipo de funções do embaixador
-void listarEmbaixadores(Embaixador embaixador[]);
-void consultarEmbaixador();
-void adicionarEmbaixador(Embaixador embaixador[], const char *pFicheiro);
-void alterarInfoEmbaixador();
-void eliminarEmbaixador();
+// Protótipos de funlções do embaixador
+void adicionarEmbaixador(Embaixador embaixador, const char *ficheiro);
 
-// Gerir dados
-void carregarEmbaixador(Embaixador embaixador[], const char *pFicheiro);
-void salvarEmbaixador(Embaixador embaixador[], const char *pFicheiro);
-
-// Validar dados
-int validarNif();
-int validarNumeroEstudante();
-
-// Funções adicionais
-void inicializarEmbaixador(Embaixador embaixador[]);
+// Protótipo para a gerir a validar dados
+int validarNumero(const char *numero);
+void validarNome(char *nome, const char *input);
+void validarNif(char *nif, const char *input);
+void capitalizarNome(char *nome);
 
 
-#endif
+#endif 
+#define EMBAIXADOR_H
