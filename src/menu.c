@@ -40,20 +40,3 @@ void mostrarMenu() {
         printf("%s\n", menuItems[i]);
     }
 }
-
-
-// Sair do menu
-int sairMenu() {
-    char escolha;
-
-    printf("Pretende sair do menu? (s/n)");
-    scanf("%c", &escolha);
-
-    if (escolha == 's' || escolha == 'S') {
-        printf("A sair...");
-        return 0;
-    }
-
-    getchar();
-    printf("Continuar..");    
-}

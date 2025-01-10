@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
+        "*.html": "html",
+        "*.jinja": "jinja-html",
+        "*.j2": "jinja-html",
         "windows.h": "c",
         "menu.h": "c",
         "stdio.h": "c",
@@ -8,6 +11,7 @@
         "embaixador.h": "c",
         "array": "c",
         "initializer_list": "c",
-        "utility": "c"
+        "utility": "c",
+        "typeinfo": "c"
     }
 }

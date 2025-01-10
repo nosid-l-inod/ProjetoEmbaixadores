@@ -2,7 +2,7 @@
 Este é o projeto desenvolvido na disciplina de AFP
 
 gcc main.c src/embaixador.c src/menu.c src/visita.c -o main
-<!-- gcc main.c src/embaixador.c src/menu.c -o main -->
+gcc main.c src/embaixador.c src/menu.c -o main
 
 
 Mostrar a estrutura do projeto envez de escrever cenas

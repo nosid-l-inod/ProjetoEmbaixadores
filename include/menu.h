@@ -6,6 +6,6 @@
 
 // Opções do menu
 void mostrarMenu();
-int sairMenu();
+
 
 #endif

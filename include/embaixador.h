@@ -16,16 +16,22 @@ typedef struct {
 
 
 // Protótipo de funções do embaixador
-void listarEmbaixadores();
+void listarEmbaixadores(Embaixador embaixador[]);
 void consultarEmbaixador();
-void adicionarEmbaixador(Embaixador embaixador[], const char *ficheiro);
+void adicionarEmbaixador(Embaixador embaixador[], const char *pFicheiro);
 void alterarInfoEmbaixador();
 void eliminarEmbaixador();
 
+// Gerir dados
+void carregarEmbaixador(Embaixador embaixador[], const char *pFicheiro);
+void salvarEmbaixador(Embaixador embaixador[], const char *pFicheiro);
 
 // Validar dados
 int validarNif();
 int validarNumeroEstudante();
+
+// Funções adicionais
+void inicializarEmbaixador(Embaixador embaixador[]);
 
 
 #endif
