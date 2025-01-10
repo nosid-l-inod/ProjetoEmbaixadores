@@ -37,8 +37,6 @@ Esta função cria um embaixador e guarda o mesmo no ficheiro csv
 garante que o campo aceite o tipo de dado esperado, um numero
 
 # Estrutura do projeto
-## Esta é a estrutura do projeto
-
 ProjetoEmbaixadores/
 ├── src/
 │   ├── embaixadore.c
