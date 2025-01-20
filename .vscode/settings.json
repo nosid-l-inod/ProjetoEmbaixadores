@@ -12,6 +12,8 @@
         "array": "c",
         "initializer_list": "c",
         "utility": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "stdlib.h": "c",
+        "utils.h": "c"
     }
 }
