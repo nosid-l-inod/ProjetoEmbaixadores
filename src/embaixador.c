@@ -1,17 +1,72 @@
 // Ficheiro: embaixador.c
-// Data: 10/01/2025
-// Descrição: Contém funções relativas ao embaixador
+// Descrição: Contém funções do embaixador
+// Data: 22-01-2025
 
+#include <stdio.h>
+#include <string.h>
 #include "../include/embaixador.h"
 #include "../include/utils.h"
 
-// Inicializar embaixador
-void inicializarEmbaixador(Embaixador embaixador[]) {
-    int i;
 
-    for (i = 0; i < MAX_EMBAIXADORES; i++) {
-        embaixador[i].numeroEstudante = -1;
+// Listar embaixadores
+void listarEmbaixadores(Embaixador embaixador[]) {
+    // Ordenar embaixadores
+    ordenarEmbaixadoresNome(embaixador);
+
+    printf("+-----------------+--------+--------------------------------------------+-----------+\n");
+    printf("| %-15s | %-6s | %-42s | %-9s |\n", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
+    printf("+-----------------+--------+--------------------------------------------+-----------+\n");
+
+    for (int i = 0; i < MAX_EMBAIXADORES && embaixador[i].numeroEstudante != -1; i++) {
+        printf("| %-15d | %-6s | %-42s | %-9s |\n", 
+            embaixador[i].numeroEstudante, 
+            embaixador[i].escola, 
+            embaixador[i].nomeCompleto, 
+            embaixador[i].nif
+        );
+        printf("+-----------------+--------+--------------------------------------------+-----------+\n");
     }
+}
+
+// Consultar embaixador (Por Numero de estudante)
+void consultarEmbaixador(Embaixador embaixador[]) {
+    int index;
+    int encontrado = 0;
+    char continuar;
+
+    do {
+        cls();
+        listarEmbaixadoresIndex(embaixador);
+
+        printf("\nNumero do embaixador a consultar: ");
+        scanf("%d", &index);
+        cls();
+
+        index = index - 1;
+
+        printf("Detalhes do embaixador\n\n");
+        if (index >= 0 && index < MAX_EMBAIXADORES && embaixador[index].numeroEstudante != -1) {
+            printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
+            printf("| %-4s | %-15s | %-6s | %-42s | %-9s |\n", "No.", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
+            printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
+            printf("| %-4d | %-15d | %-6s | %-42s | %-9s |\n",
+                index + 1,
+                embaixador[index].numeroEstudante,
+                embaixador[index].escola,
+                embaixador[index].nomeCompleto,
+                embaixador[index].nif
+            );
+            printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
+            encontrado = 1;
+        }
+        else {
+            printf("Embaixador nao encontrado.\n");
+        }
+
+        printf("\nDeseja consultar mais embaixadores? (S/N): ");
+        scanf(" %c", &continuar);
+
+    } while (continuar == 's' || continuar == 'S');
 }
 
 // Adicionar embaixador
@@ -31,9 +86,8 @@ void adicionarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
         return;
     }
 
-    // Numero de estudaante
+    // Numero de estudante
     int numeroEstudante;
-
     numeroEstudante = validarNumero(embaixador, "Numero de estudante");
     embaixador[i].numeroEstudante = numeroEstudante;
 
@@ -44,7 +98,6 @@ void adicionarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
 
     // Mostrar escolas
     printf("\nEscolas disponiveis: \n");
-
     for (int j = 0; j < tamanhoEscola; j++) {
         printf("%d. %s\n", j + 1, escolas[j]);
     }
@@ -68,19 +121,14 @@ void adicionarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
     strcpy(embaixador[i].escola, escolas[escolha - 1]);
     while (getchar() != '\n');
 
-    //  Nome completo
+    // Nome completo
     char nomeCompleto[150];
-
-    // Validar e adicionar nome completo
     validarPalavra(nomeCompleto, "\nNome completo");
-
     capitalizarNome(nomeCompleto);
     strcpy(embaixador[i].nomeCompleto, nomeCompleto);   
 
     // NIF
     char nif[10];
-
-    // Validar e adicionar NIF
     validarNif(embaixador ,nif, "NIF");
     strcpy(embaixador[i].nif, nif);
 
@@ -115,94 +163,7 @@ void adicionarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
     printf("\n%s registado com sucesso.", embaixador[i].nomeCompleto);
 }
 
-// Listar embaixador
-void listarEmbaixadores(Embaixador embaixador[]) {
-
-    // Ordenar embaixadores por nome
-    ordenarEmbaixadoresNome(embaixador);
-
-    printf("+-----------------+--------+--------------------------------------------+-----------+\n");
-    printf("| %-15s | %-6s | %-42s | %-9s |\n", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
-    printf("+-----------------+--------+--------------------------------------------+-----------+\n");
-
-    for (int i = 0; i < MAX_EMBAIXADORES && embaixador[i].numeroEstudante != -1; i++) {
-        printf("| %-15d | %-6s | %-42s | %-9s |\n", 
-            embaixador[i].numeroEstudante, 
-            embaixador[i].escola, 
-            embaixador[i].nomeCompleto, 
-            embaixador[i].nif
-        );
-        printf("+-----------------+--------+--------------------------------------------+-----------+\n");
-    }
-}
-
-// Listar embaixador e posição no vetor
-void listarEmbaixadoresIndex(Embaixador embaixador[]) {
-    ordenarEmbaixadoresNome(embaixador);
-
-    printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
-    printf("| %-4s | %-15s | %-6s | %-42s | %-9s |\n", "No.", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
-    printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
-
-    for (int i = 0; i < MAX_EMBAIXADORES && embaixador[i].numeroEstudante != -1; i++) {
-        printf("| %-4d | %-15d | %-6s | %-42s | %-9s |\n", 
-            i + 1,
-            embaixador[i].numeroEstudante, 
-            embaixador[i].escola, 
-            embaixador[i].nomeCompleto, 
-            embaixador[i].nif
-        );
-        printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
-    }
-}
-
-// Consultar embaixador (Por Numero de estudante)
-void consultarEmbaixador(Embaixador embaixador[]) {
-    int index;
-    int encontrado = 0;
-    char continuar;
-
-    do {
-        cls();
-        listarEmbaixadoresIndex(embaixador);
-
-        printf("\nNumero do embaixador a consultar: ", MAX_EMBAIXADORES);
-        scanf("%d", &index);
-        cls();
-
-        index = index - 1;
-
-        printf("Detalhes do embaixador\n\n");
-        if (index >= 0 && index < MAX_EMBAIXADORES && embaixador[index].numeroEstudante != -1) {
-            printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
-            printf("| %-4s | %-15s | %-6s | %-42s | %-9s |\n", "No.", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
-            printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
-            printf("| %-4d | %-15d | %-6s | %-42s | %-9s |\n",
-                index + 1,
-                embaixador[index].numeroEstudante,
-                embaixador[index].escola,
-                embaixador[index].nomeCompleto,
-                embaixador[index].nif
-            );
-            printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
-            encontrado = 1;
-        }
-        else {
-            printf("Embaixador nao encontrado.\n", index + 1);
-        }
-
-        printf("\n..");
-        getchar();
-        getchar();
-        cls();
-
-        printf("\nDeseja consultar mais embaixadores? (S/N): ");
-        scanf(" %c", &continuar);
-
-    } while (continuar == 's' || continuar == 'S');
-}
-
-// Editar embaixador
+// Alterar informações do embaixador
 void alterarInfoEmbaixador(Embaixador embaixador[], const char *ficheiro) {
     char continuar;
 
@@ -252,8 +213,7 @@ void alterarInfoEmbaixador(Embaixador embaixador[], const char *ficheiro) {
 
                     switch (alterar) {
                         case 1:
-                            printf("Novo NumeroEstudante: ");
-                            embaixador[index].numeroEstudante = validarNumero(embaixador, "NumeroEstudante");
+                            embaixador[index].numeroEstudante = validarNumero(embaixador, "Novo numero de estudante");
                             break;
                         case 2: {
                             const char *escolas[] = {"ESTS", "ESTB", "ESE", "ESCE", "ESS"};
@@ -265,8 +225,9 @@ void alterarInfoEmbaixador(Embaixador embaixador[], const char *ficheiro) {
                             }
 
                             int escolha;
+
                             while (1) {
-                                printf("\nSelecione a nova escola: ", tamanhoEscola);
+                                printf("\nSelecione a nova escola: ");
 
                                 if (scanf("%d", &escolha) != 1 || escolha < 1 || escolha > tamanhoEscola) {
                                     printf("Escolha invalida. Selecione um numero entre 1 e %d.\n", tamanhoEscola);
@@ -280,7 +241,8 @@ void alterarInfoEmbaixador(Embaixador embaixador[], const char *ficheiro) {
                             break;
                         }
                         case 3:
-                            validarPalavra(embaixador[index].nomeCompleto, "Novo numero de estudante");
+                            validarPalavra(embaixador[index].nomeCompleto, "Novo nome completo");
+                            capitalizarNome(embaixador[index].nomeCompleto);
                             break;
                         case 4:
                             validarNif(embaixador, embaixador[index].nif, "Novo NIF");
@@ -291,7 +253,7 @@ void alterarInfoEmbaixador(Embaixador embaixador[], const char *ficheiro) {
                     }
 
                     cls();
-                    printf("Detalhes atualizados do embaixador com indice %d:\n", index + 1);
+                    printf("Detalhes atualizados do embaixador:\n");
                     printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
                     printf("| %-4s | %-15s | %-6s | %-42s | %-9s |\n", "No.", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
                     printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
@@ -310,6 +272,7 @@ void alterarInfoEmbaixador(Embaixador embaixador[], const char *ficheiro) {
 
                 // Atualizar os dados no ficheiro
                 FILE *file = fopen(ficheiro, "w");
+
                 if (file == NULL) {
                     printf("Nao e possivel abrir o ficheiro\n");
                 } 
@@ -354,7 +317,7 @@ void eliminarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
     do {
         listarEmbaixadoresIndex(embaixador);
 
-        printf("\nNumero do embaixador a remover: ", MAX_EMBAIXADORES);
+        printf("\nNumero do embaixador a remover: ");
         scanf("%d", &index);
         while (getchar() != '\n');
         index -= 1;
@@ -377,7 +340,8 @@ void eliminarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
                 FILE *file = fopen(ficheiro, "w");
                 if (file == NULL) {
                     printf("Nao e possivel abrir o ficheiro\n");
-                } else {
+                } 
+                else {
                     for (int i = 0; i < MAX_EMBAIXADORES; i++) {
                         if (embaixador[i].numeroEstudante == -1) {
                             break;
@@ -414,4 +378,93 @@ void eliminarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
     }
 }
 
+// Inicializar embaixador
+void inicializarEmbaixador(Embaixador embaixador[]) {
+    int i;
 
+    for (i = 0; i < MAX_EMBAIXADORES; i++) {
+        embaixador[i].numeroEstudante = -1;
+    }
+}
+
+// Carregar embaixadores do ficheiro para o vetor
+void carregarEmbaixador(Embaixador embaixador[], const char *ficheiro) {
+    FILE *file = fopen(ficheiro, "r");
+
+    // Verificar se o ficheiro existe
+    if (file == NULL) {
+        printf("Nao e possivel abrir o ficheiro\n");
+        return;
+    }
+
+    char buffer[256];
+    int i = 0;
+
+    // Carregar os dados
+    while (fgets(buffer, sizeof(buffer), file) && i < MAX_EMBAIXADORES) {
+        sscanf(
+            buffer, 
+            "%d, %[^,], %[^,], %s", 
+            &embaixador[i].numeroEstudante, 
+            embaixador[i].escola, 
+            embaixador[i].nomeCompleto, 
+            embaixador[i].nif
+        );
+        i++;
+    }
+    
+    // Reservar o proximo slot
+    if (i < MAX_EMBAIXADORES) {
+        embaixador[i].numeroEstudante = -1;
+    }
+    
+    fclose(file);
+}
+
+// Listar embaixador e posição no vetor
+void listarEmbaixadoresIndex(Embaixador embaixador[]) {
+
+    // Ordenar embaixador por nome
+    ordenarEmbaixadoresNome(embaixador);
+
+    printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
+    printf("| %-4s | %-15s | %-6s | %-42s | %-9s |\n", "No.", "NumeroEstudante", "Escola", "NomeCompleto", "NIF");
+    printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
+
+    for (int i = 0; i < MAX_EMBAIXADORES && embaixador[i].numeroEstudante != -1; i++) {
+        printf("| %-4d | %-15d | %-6s | %-42s | %-9s |\n", 
+            i + 1,
+            embaixador[i].numeroEstudante, 
+            embaixador[i].escola, 
+            embaixador[i].nomeCompleto, 
+            embaixador[i].nif
+        );
+        printf("+------+-----------------+--------+--------------------------------------------+-----------+\n");
+    }
+}
+
+// Ordenar embaixadores por nome
+void ordenarEmbaixadoresNome(Embaixador embaixador[]) {
+    for (int i = 0; i < MAX_EMBAIXADORES - 1 && embaixador[i].numeroEstudante != -1; i++) {
+        for (int j = i + 1; j < MAX_EMBAIXADORES && embaixador[j].numeroEstudante != -1; j++) {
+            if (strcmp(embaixador[i].nomeCompleto, embaixador[j].nomeCompleto) > 0) {
+                Embaixador temp = embaixador[i];
+                embaixador[i] = embaixador[j];
+                embaixador[j] = temp;
+            }
+        }
+    }
+}
+
+// Verificar se o número do estudante existe
+int embaixadorExiste(Embaixador embaixador[], int numeroEstudante) {
+    for (int i = 0; i < MAX_EMBAIXADORES; i++) {
+        if (embaixador[i].numeroEstudante == -1) {
+            break;
+        }
+        if (embaixador[i].numeroEstudante == numeroEstudante) {
+            return 1; // Embaixador existe
+        }
+    }
+    return 0; // Embaixador não existe
+}

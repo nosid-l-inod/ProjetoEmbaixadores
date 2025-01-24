@@ -1,22 +1,10 @@
-// Ficheiro: main.c
-// Data: 10/01/2025
-// Descrição: Função principal do projeto embaixadores
-
-// gcc main.c src/embaixador.c src/menu.c src/utils.c -o main
-
-
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <windows.h>
-
 #include "include/embaixador.h"
+#include "include/visita.h"
 #include "include/utils.h"
 #include "include/menu.h"
-#include "include/visita.h"
 
-
-// Função principal
 // Main
 int main() {
     
@@ -37,7 +25,7 @@ int main() {
     carregarVisita(visita, ficheiroVisita);
 
     int opcao;
-    int continuar;
+    char continuar;
 
     while (1) {
         cls();
@@ -57,6 +45,9 @@ int main() {
             case 2:
                 listarEmbaixadores(embaixador);
                 break;
+            case 3:
+                consultarVisita(visita, embaixador);
+                break;
             case 4:
                 consultarEmbaixador(embaixador);
                 break;
@@ -71,12 +62,25 @@ int main() {
                     printf("\n\nAdicionar mais embaixadores? (S/N): ");
                     scanf(" %c", &continuar);
                     while (getchar() != '\n');
-                }
-                while (continuar == 's' || continuar == 'S');
-
+                } while (continuar == 's' || continuar == 'S');
+                break;
+            case 7:
+                autorizarVisita(visita, embaixador, ficheiroVisita);
+                break;
+            case 8:
+                cancelarVisita(visita, ficheiroVisita);
+                break;
+            case 9:
+                confirmarRealizacaoVisita(visita, ficheiroVisita);
+                break;
+            case 10:
+                alterarInformacaoVisita(visita, embaixador, ficheiroVisita);
                 break;
             case 11:
                 alterarInfoEmbaixador(embaixador, ficheiroEmbaixador);
+                break;
+            case 12:
+                eliminarVisita(visita, ficheiroVisita);
                 break;
             case 13:
                 eliminarEmbaixador(embaixador, ficheiroEmbaixador);
